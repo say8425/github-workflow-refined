@@ -1,48 +1,55 @@
-import { useState, useEffect } from "react";
-import dayjs from "dayjs";
-import relativeTime from "dayjs/plugin/relativeTime";
+import { useState, useEffect } from 'react';
+import dayjs from 'dayjs';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/ko';
+import 'dayjs/locale/ja';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/zh-tw';
+import 'dayjs/locale/de';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/es';
+import 'dayjs/locale/pt';
+import 'dayjs/locale/ru';
 import {
   timeFormatSettings,
   DEFAULT_TIME_FORMAT_SETTINGS,
+  LOCALE_LABELS,
   type TimeFormatSettings,
   type TimeDisplayMode,
-} from "@/utils/storage";
-import "./App.css";
+  type SupportedLocale,
+} from '@/utils/storage';
+import './App.css';
 
 dayjs.extend(relativeTime);
 
 const PRESET_FORMATS = [
-  { label: "YYYY-MM-DD HH:mm:ss", value: "YYYY-MM-DD HH:mm:ss" },
-  { label: "YYYY/MM/DD HH:mm", value: "YYYY/MM/DD HH:mm" },
-  { label: "MM/DD/YYYY h:mm A", value: "MM/DD/YYYY h:mm A" },
-  { label: "DD/MM/YYYY HH:mm", value: "DD/MM/YYYY HH:mm" },
-  { label: "MMM DD, YYYY h:mm A", value: "MMM DD, YYYY h:mm A" },
-  { label: "MMMM DD, YYYY HH:mm", value: "MMMM DD, YYYY HH:mm" },
+  { label: 'YYYY-MM-DD HH:mm:ss', value: 'YYYY-MM-DD HH:mm:ss' },
+  { label: 'YYYY/MM/DD HH:mm', value: 'YYYY/MM/DD HH:mm' },
+  { label: 'MM/DD/YYYY h:mm A', value: 'MM/DD/YYYY h:mm A' },
+  { label: 'DD/MM/YYYY HH:mm', value: 'DD/MM/YYYY HH:mm' },
+  { label: 'MMM DD, YYYY h:mm A', value: 'MMM DD, YYYY h:mm A' },
+  { label: 'MMMM DD, YYYY HH:mm', value: 'MMMM DD, YYYY HH:mm' },
 ];
 
 const THRESHOLD_OPTIONS = [
-  { label: "1 hour", value: 60 * 60 * 1000 },
-  { label: "6 hours", value: 6 * 60 * 60 * 1000 },
-  { label: "12 hours", value: 12 * 60 * 60 * 1000 },
-  { label: "24 hours", value: 24 * 60 * 60 * 1000 },
-  { label: "7 days", value: 7 * 24 * 60 * 60 * 1000 },
-  { label: "30 days", value: 30 * 24 * 60 * 60 * 1000 },
+  { label: '1 hour', value: 60 * 60 * 1000 },
+  { label: '6 hours', value: 6 * 60 * 60 * 1000 },
+  { label: '12 hours', value: 12 * 60 * 60 * 1000 },
+  { label: '24 hours', value: 24 * 60 * 60 * 1000 },
+  { label: '7 days', value: 7 * 24 * 60 * 60 * 1000 },
+  { label: '30 days', value: 30 * 24 * 60 * 60 * 1000 },
 ];
 
 function App() {
-  const [settings, setSettings] = useState<TimeFormatSettings>(
-    DEFAULT_TIME_FORMAT_SETTINGS,
-  );
-  const [customFormat, setCustomFormat] = useState("");
+  const [settings, setSettings] = useState<TimeFormatSettings>(DEFAULT_TIME_FORMAT_SETTINGS);
+  const [customFormat, setCustomFormat] = useState('');
   const [isCustom, setIsCustom] = useState(false);
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
     timeFormatSettings.getValue().then((value) => {
       setSettings(value);
-      const isPreset = PRESET_FORMATS.some(
-        (f) => f.value === value.absoluteFormat,
-      );
+      const isPreset = PRESET_FORMATS.some((f) => f.value === value.absoluteFormat);
       setIsCustom(!isPreset);
       if (!isPreset) {
         setCustomFormat(value.absoluteFormat);
@@ -55,7 +62,7 @@ function App() {
   };
 
   const handleFormatChange = (format: string) => {
-    if (format === "custom") {
+    if (format === 'custom') {
       setIsCustom(true);
     } else {
       setIsCustom(false);
@@ -72,24 +79,29 @@ function App() {
     setSettings((prev) => ({ ...prev, autoThresholdMs: threshold }));
   };
 
+  const handleLocaleChange = (locale: SupportedLocale) => {
+    setSettings((prev) => ({ ...prev, locale }));
+  };
+
   const handleSave = async () => {
     await timeFormatSettings.setValue(settings);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
 
-  const previewTime = dayjs().subtract(2, "hour");
+  const previewTime = dayjs().subtract(2, 'hour');
   const getPreview = () => {
+    const localizedTime = previewTime.locale(settings.locale);
     const elapsed = Date.now() - previewTime.valueOf();
     switch (settings.displayMode) {
-      case "relative":
-        return previewTime.fromNow();
-      case "absolute":
-        return previewTime.format(settings.absoluteFormat);
-      case "auto":
+      case 'relative':
+        return localizedTime.fromNow();
+      case 'absolute':
+        return localizedTime.format(settings.absoluteFormat);
+      case 'auto':
         return elapsed > settings.autoThresholdMs
-          ? previewTime.format(settings.absoluteFormat)
-          : previewTime.fromNow();
+          ? localizedTime.format(settings.absoluteFormat)
+          : localizedTime.fromNow();
     }
   };
 
@@ -99,14 +111,29 @@ function App() {
       <p className="subtitle">Time Format Settings</p>
 
       <section className="section">
+        <h2>Language</h2>
+        <select
+          className="select"
+          value={settings.locale}
+          onChange={(e) => handleLocaleChange(e.target.value as SupportedLocale)}
+        >
+          {(Object.entries(LOCALE_LABELS) as [SupportedLocale, string][]).map(([code, label]) => (
+            <option key={code} value={code}>
+              {label}
+            </option>
+          ))}
+        </select>
+      </section>
+
+      <section className="section">
         <h2>Display Mode</h2>
         <div className="radio-group">
           <label className="radio-label">
             <input
               type="radio"
               name="displayMode"
-              checked={settings.displayMode === "relative"}
-              onChange={() => handleDisplayModeChange("relative")}
+              checked={settings.displayMode === 'relative'}
+              onChange={() => handleDisplayModeChange('relative')}
             />
             <span>Relative</span>
             <span className="hint">e.g., "2 hours ago"</span>
@@ -115,8 +142,8 @@ function App() {
             <input
               type="radio"
               name="displayMode"
-              checked={settings.displayMode === "absolute"}
-              onChange={() => handleDisplayModeChange("absolute")}
+              checked={settings.displayMode === 'absolute'}
+              onChange={() => handleDisplayModeChange('absolute')}
             />
             <span>Absolute</span>
             <span className="hint">e.g., "2024-01-15 14:30:00"</span>
@@ -125,23 +152,20 @@ function App() {
             <input
               type="radio"
               name="displayMode"
-              checked={settings.displayMode === "auto"}
-              onChange={() => handleDisplayModeChange("auto")}
+              checked={settings.displayMode === 'auto'}
+              onChange={() => handleDisplayModeChange('auto')}
             />
             <span>Auto</span>
-            <span className="hint">
-              Relative within threshold, then absolute
-            </span>
+            <span className="hint">Relative within threshold, then absolute</span>
           </label>
         </div>
       </section>
 
-      {settings.displayMode === "auto" && (
+      {settings.displayMode === 'auto' && (
         <section className="section">
           <h2>Auto Threshold</h2>
           <p className="description">
-            Show relative time until this duration has passed, then switch to
-            absolute.
+            Show relative time until this duration has passed, then switch to absolute.
           </p>
           <select
             className="select"
@@ -157,23 +181,18 @@ function App() {
         </section>
       )}
 
-      {(settings.displayMode === "absolute" ||
-        settings.displayMode === "auto") && (
+      {(settings.displayMode === 'absolute' || settings.displayMode === 'auto') && (
         <section className="section">
           <h2>Absolute Format</h2>
           <p className="description">
-            Uses{" "}
-            <a
-              href="https://day.js.org/docs/en/display/format"
-              target="_blank"
-              rel="noreferrer"
-            >
+            Uses{' '}
+            <a href="https://day.js.org/docs/en/display/format" target="_blank" rel="noreferrer">
               Day.js format tokens
             </a>
           </p>
           <select
             className="select"
-            value={isCustom ? "custom" : settings.absoluteFormat}
+            value={isCustom ? 'custom' : settings.absoluteFormat}
             onChange={(e) => handleFormatChange(e.target.value)}
           >
             {PRESET_FORMATS.map((format) => (
@@ -201,7 +220,7 @@ function App() {
       </section>
 
       <button className="save-button" onClick={handleSave}>
-        {saved ? "Saved!" : "Save Settings"}
+        {saved ? 'Saved!' : 'Save Settings'}
       </button>
     </div>
   );

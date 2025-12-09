@@ -1,5 +1,14 @@
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/ko';
+import 'dayjs/locale/ja';
+import 'dayjs/locale/zh-cn';
+import 'dayjs/locale/zh-tw';
+import 'dayjs/locale/de';
+import 'dayjs/locale/fr';
+import 'dayjs/locale/es';
+import 'dayjs/locale/pt';
+import 'dayjs/locale/ru';
 import {
   timeFormatSettings,
   type TimeFormatSettings,
@@ -12,10 +21,9 @@ export default defineContentScript({
   matches: ['*://github.com/*/actions*'],
   main() {
     let settings: TimeFormatSettings = DEFAULT_TIME_FORMAT_SETTINGS;
-    const processedElements = new WeakSet<Element>();
 
     const formatTime = (date: Date): string => {
-      const d = dayjs(date);
+      const d = dayjs(date).locale(settings.locale);
       const elapsed = Date.now() - date.getTime();
 
       switch (settings.displayMode) {
@@ -60,8 +68,6 @@ export default defineContentScript({
 
     // Override the connectedCallback to intercept updates
     const setupElementInterceptor = () => {
-      const originalDefine = customElements.define.bind(customElements);
-
       // Watch for shadow root changes on relative-time elements
       const observeShadowRoot = (el: HTMLElement) => {
         if (!el.shadowRoot) return;

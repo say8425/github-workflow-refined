@@ -83,6 +83,10 @@ function App() {
     setSettings((prev) => ({ ...prev, locale }));
   };
 
+  const handleTodayIndicatorChange = (checked: boolean) => {
+    setSettings((prev) => ({ ...prev, showTodayIndicator: checked }));
+  };
+
   const handleSave = async () => {
     await timeFormatSettings.setValue(settings);
     setSaved(true);
@@ -93,16 +97,33 @@ function App() {
   const getPreview = () => {
     const localizedTime = previewTime.locale(settings.locale);
     const elapsed = Date.now() - previewTime.valueOf();
+    let result: string;
+    let showAbsolute = false;
+
     switch (settings.displayMode) {
       case 'relative':
-        return localizedTime.fromNow();
+        result = localizedTime.fromNow();
+        break;
       case 'absolute':
-        return localizedTime.format(settings.absoluteFormat);
+        result = localizedTime.format(settings.absoluteFormat);
+        showAbsolute = true;
+        break;
       case 'auto':
-        return elapsed > settings.autoThresholdMs
-          ? localizedTime.format(settings.absoluteFormat)
-          : localizedTime.fromNow();
+        if (elapsed > settings.autoThresholdMs) {
+          result = localizedTime.format(settings.absoluteFormat);
+          showAbsolute = true;
+        } else {
+          result = localizedTime.fromNow();
+        }
+        break;
     }
+
+    // Preview is 2 hours ago, so it's always "today"
+    if (showAbsolute && settings.showTodayIndicator) {
+      result = '📅 ' + result;
+    }
+
+    return result;
   };
 
   return (
@@ -211,6 +232,14 @@ function App() {
               onChange={(e) => handleCustomFormatChange(e.target.value)}
             />
           )}
+          <label className="checkbox-label">
+            <input
+              type="checkbox"
+              checked={settings.showTodayIndicator}
+              onChange={(e) => handleTodayIndicatorChange(e.target.checked)}
+            />
+            <span>Show today indicator (📅)</span>
+          </label>
         </section>
       )}
 

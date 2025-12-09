@@ -32,6 +32,7 @@ export interface TimeFormatSettings {
   absoluteFormat: string;
   autoThresholdMs: number;
   locale: SupportedLocale;
+  showTodayIndicator: boolean;
 }
 
 export const DEFAULT_TIME_FORMAT_SETTINGS: TimeFormatSettings = {
@@ -39,6 +40,7 @@ export const DEFAULT_TIME_FORMAT_SETTINGS: TimeFormatSettings = {
   absoluteFormat: 'YYYY-MM-DD HH:mm:ss',
   autoThresholdMs: 24 * 60 * 60 * 1000, // 24 hours
   locale: 'en',
+  showTodayIndicator: false,
 };
 
 export const timeFormatSettings = storage.defineItem<TimeFormatSettings>(

@@ -22,20 +22,45 @@ export default defineContentScript({
   main() {
     let settings: TimeFormatSettings = DEFAULT_TIME_FORMAT_SETTINGS;
 
+    const isToday = (date: Date): boolean => {
+      const today = new Date();
+      return (
+        date.getDate() === today.getDate() &&
+        date.getMonth() === today.getMonth() &&
+        date.getFullYear() === today.getFullYear()
+      );
+    };
+
     const formatTime = (date: Date): string => {
       const d = dayjs(date).locale(settings.locale);
       const elapsed = Date.now() - date.getTime();
 
+      let result: string;
+      let showAbsolute = false;
+
       switch (settings.displayMode) {
         case 'relative':
-          return d.fromNow();
+          result = d.fromNow();
+          break;
         case 'absolute':
-          return d.format(settings.absoluteFormat);
+          result = d.format(settings.absoluteFormat);
+          showAbsolute = true;
+          break;
         case 'auto':
-          return elapsed > settings.autoThresholdMs
-            ? d.format(settings.absoluteFormat)
-            : d.fromNow();
+          if (elapsed > settings.autoThresholdMs) {
+            result = d.format(settings.absoluteFormat);
+            showAbsolute = true;
+          } else {
+            result = d.fromNow();
+          }
+          break;
       }
+
+      if (showAbsolute && settings.showTodayIndicator && isToday(date)) {
+        result = '📅 ' + result;
+      }
+
+      return result;
     };
 
     const processTimeElement = (el: HTMLElement) => {

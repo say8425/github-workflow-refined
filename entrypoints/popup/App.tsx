@@ -12,9 +12,12 @@ import 'dayjs/locale/pt';
 import 'dayjs/locale/ru';
 import {
   timeFormatSettings,
+  workflowSettings,
   DEFAULT_TIME_FORMAT_SETTINGS,
+  DEFAULT_WORKFLOW_SETTINGS,
   LOCALE_LABELS,
   type TimeFormatSettings,
+  type WorkflowSettings,
   type TimeDisplayMode,
   type SupportedLocale,
 } from '@/utils/storage';
@@ -42,6 +45,7 @@ const THRESHOLD_OPTIONS = [
 
 function App() {
   const [settings, setSettings] = useState<TimeFormatSettings>(DEFAULT_TIME_FORMAT_SETTINGS);
+  const [wfSettings, setWfSettings] = useState<WorkflowSettings>(DEFAULT_WORKFLOW_SETTINGS);
   const [customFormat, setCustomFormat] = useState('');
   const [isCustom, setIsCustom] = useState(false);
   const [saved, setSaved] = useState(false);
@@ -54,6 +58,9 @@ function App() {
       if (!isPreset) {
         setCustomFormat(value.absoluteFormat);
       }
+    });
+    workflowSettings.getValue().then((value) => {
+      setWfSettings(value);
     });
   }, []);
 
@@ -87,8 +94,22 @@ function App() {
     setSettings((prev) => ({ ...prev, showTodayIndicator: checked }));
   };
 
+  const handleAutoExpandChange = (checked: boolean) => {
+    setWfSettings((prev) => ({ ...prev, autoExpandWorkflows: checked }));
+  };
+
+  const handleRemovePinnedWorkflow = (url: string) => {
+    setWfSettings((prev) => ({
+      ...prev,
+      pinnedWorkflows: prev.pinnedWorkflows.filter((w) => w.url !== url),
+    }));
+  };
+
   const handleSave = async () => {
-    await timeFormatSettings.setValue(settings);
+    await Promise.all([
+      timeFormatSettings.setValue(settings),
+      workflowSettings.setValue(wfSettings),
+    ]);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
   };
@@ -129,124 +150,169 @@ function App() {
   return (
     <div className="app">
       <h1>GitHub Workflow Refined</h1>
-      <p className="subtitle">Time Format Settings</p>
 
-      <section className="section">
-        <h2>Language</h2>
-        <select
-          className="select"
-          value={settings.locale}
-          onChange={(e) => handleLocaleChange(e.target.value as SupportedLocale)}
-        >
-          {(Object.entries(LOCALE_LABELS) as [SupportedLocale, string][]).map(([code, label]) => (
-            <option key={code} value={code}>
-              {label}
-            </option>
-          ))}
-        </select>
-      </section>
+      <div className="section-group">
+        <h2 className="section-title">Workflow List</h2>
 
-      <section className="section">
-        <h2>Display Mode</h2>
-        <div className="radio-group">
-          <label className="radio-label">
-            <input
-              type="radio"
-              name="displayMode"
-              checked={settings.displayMode === 'relative'}
-              onChange={() => handleDisplayModeChange('relative')}
-            />
-            <span>Relative</span>
-            <span className="hint">e.g., "2 hours ago"</span>
-          </label>
-          <label className="radio-label">
-            <input
-              type="radio"
-              name="displayMode"
-              checked={settings.displayMode === 'absolute'}
-              onChange={() => handleDisplayModeChange('absolute')}
-            />
-            <span>Absolute</span>
-            <span className="hint">e.g., "2024-01-15 14:30:00"</span>
-          </label>
-          <label className="radio-label">
-            <input
-              type="radio"
-              name="displayMode"
-              checked={settings.displayMode === 'auto'}
-              onChange={() => handleDisplayModeChange('auto')}
-            />
-            <span>Auto</span>
-            <span className="hint">Relative within threshold, then absolute</span>
-          </label>
-        </div>
-      </section>
-
-      {settings.displayMode === 'auto' && (
         <section className="section">
-          <h2>Auto Threshold</h2>
-          <p className="description">
-            Show relative time until this duration has passed, then switch to absolute.
-          </p>
-          <select
-            className="select"
-            value={settings.autoThresholdMs}
-            onChange={(e) => handleThresholdChange(Number(e.target.value))}
-          >
-            {THRESHOLD_OPTIONS.map((opt) => (
-              <option key={opt.value} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </section>
-      )}
-
-      {(settings.displayMode === 'absolute' || settings.displayMode === 'auto') && (
-        <section className="section">
-          <h2>Absolute Format</h2>
-          <p className="description">
-            Uses{' '}
-            <a href="https://day.js.org/docs/en/display/format" target="_blank" rel="noreferrer">
-              Day.js format tokens
-            </a>
-          </p>
-          <select
-            className="select"
-            value={isCustom ? 'custom' : settings.absoluteFormat}
-            onChange={(e) => handleFormatChange(e.target.value)}
-          >
-            {PRESET_FORMATS.map((format) => (
-              <option key={format.value} value={format.value}>
-                {format.label}
-              </option>
-            ))}
-            <option value="custom">Custom...</option>
-          </select>
-          {isCustom && (
-            <input
-              type="text"
-              className="input"
-              placeholder="Enter custom format..."
-              value={customFormat}
-              onChange={(e) => handleCustomFormatChange(e.target.value)}
-            />
-          )}
           <label className="checkbox-label">
             <input
               type="checkbox"
-              checked={settings.showTodayIndicator}
-              onChange={(e) => handleTodayIndicatorChange(e.target.checked)}
+              checked={wfSettings.autoExpandWorkflows}
+              onChange={(e) => handleAutoExpandChange(e.target.checked)}
             />
-            <span>Show today indicator (📅)</span>
+            <span>Auto-expand "Show more workflows..."</span>
           </label>
         </section>
-      )}
 
-      <section className="section preview">
-        <h2>Preview</h2>
-        <div className="preview-box">{getPreview()}</div>
-      </section>
+        <section className="section">
+          <h3>Pinned Workflows</h3>
+          <p className="description">
+            Pin workflows from the GitHub Actions page using the pin button next to each workflow.
+          </p>
+          {wfSettings.pinnedWorkflows.length === 0 ? (
+            <p className="empty-message">No pinned workflows</p>
+          ) : (
+            <ul className="pinned-list">
+              {wfSettings.pinnedWorkflows.map((workflow) => (
+                <li key={workflow.url} className="pinned-item">
+                  <span className="pinned-name" title={workflow.repo}>
+                    {workflow.name}
+                  </span>
+                  <button
+                    className="unpin-button"
+                    onClick={() => handleRemovePinnedWorkflow(workflow.url)}
+                    title="Unpin"
+                  >
+                    ✕
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </div>
+
+      <div className="section-group">
+        <h2 className="section-title">Time Format</h2>
+
+        <section className="section">
+          <h3>Language</h3>
+          <select
+            className="select"
+            value={settings.locale}
+            onChange={(e) => handleLocaleChange(e.target.value as SupportedLocale)}
+          >
+            {(Object.entries(LOCALE_LABELS) as [SupportedLocale, string][]).map(([code, label]) => (
+              <option key={code} value={code}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </section>
+
+        <section className="section">
+          <h3>Display Mode</h3>
+          <div className="radio-group">
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="displayMode"
+                checked={settings.displayMode === 'relative'}
+                onChange={() => handleDisplayModeChange('relative')}
+              />
+              <span>Relative</span>
+              <span className="hint">e.g., "2 hours ago"</span>
+            </label>
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="displayMode"
+                checked={settings.displayMode === 'absolute'}
+                onChange={() => handleDisplayModeChange('absolute')}
+              />
+              <span>Absolute</span>
+              <span className="hint">e.g., "2024-01-15 14:30:00"</span>
+            </label>
+            <label className="radio-label">
+              <input
+                type="radio"
+                name="displayMode"
+                checked={settings.displayMode === 'auto'}
+                onChange={() => handleDisplayModeChange('auto')}
+              />
+              <span>Auto</span>
+              <span className="hint">Relative within threshold, then absolute</span>
+            </label>
+          </div>
+        </section>
+
+        {settings.displayMode === 'auto' && (
+          <section className="section">
+            <h3>Auto Threshold</h3>
+            <p className="description">
+              Show relative time until this duration has passed, then switch to absolute.
+            </p>
+            <select
+              className="select"
+              value={settings.autoThresholdMs}
+              onChange={(e) => handleThresholdChange(Number(e.target.value))}
+            >
+              {THRESHOLD_OPTIONS.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </section>
+        )}
+
+        {(settings.displayMode === 'absolute' || settings.displayMode === 'auto') && (
+          <section className="section">
+            <h3>Absolute Format</h3>
+            <p className="description">
+              Uses{' '}
+              <a href="https://day.js.org/docs/en/display/format" target="_blank" rel="noreferrer">
+                Day.js format tokens
+              </a>
+            </p>
+            <select
+              className="select"
+              value={isCustom ? 'custom' : settings.absoluteFormat}
+              onChange={(e) => handleFormatChange(e.target.value)}
+            >
+              {PRESET_FORMATS.map((format) => (
+                <option key={format.value} value={format.value}>
+                  {format.label}
+                </option>
+              ))}
+              <option value="custom">Custom...</option>
+            </select>
+            {isCustom && (
+              <input
+                type="text"
+                className="input"
+                placeholder="Enter custom format..."
+                value={customFormat}
+                onChange={(e) => handleCustomFormatChange(e.target.value)}
+              />
+            )}
+            <label className="checkbox-label">
+              <input
+                type="checkbox"
+                checked={settings.showTodayIndicator}
+                onChange={(e) => handleTodayIndicatorChange(e.target.checked)}
+              />
+              <span>Show today indicator (📅)</span>
+            </label>
+          </section>
+        )}
+
+        <section className="section preview">
+          <h3>Preview</h3>
+          <div className="preview-box">{getPreview()}</div>
+        </section>
+      </div>
 
       <button className="save-button" onClick={handleSave}>
         {saved ? 'Saved!' : 'Save Settings'}

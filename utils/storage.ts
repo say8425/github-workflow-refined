@@ -35,6 +35,17 @@ export interface TimeFormatSettings {
   showTodayIndicator: boolean;
 }
 
+export interface WorkflowSettings {
+  autoExpandWorkflows: boolean;
+  pinnedWorkflows: PinnedWorkflow[];
+}
+
+export interface PinnedWorkflow {
+  repo: string; // e.g., "owner/repo"
+  name: string; // workflow name
+  url: string;  // workflow URL path
+}
+
 export const DEFAULT_TIME_FORMAT_SETTINGS: TimeFormatSettings = {
   displayMode: 'auto',
   absoluteFormat: 'YYYY-MM-DD HH:mm:ss',
@@ -47,5 +58,17 @@ export const timeFormatSettings = storage.defineItem<TimeFormatSettings>(
   'local:timeFormatSettings',
   {
     fallback: DEFAULT_TIME_FORMAT_SETTINGS,
+  }
+);
+
+export const DEFAULT_WORKFLOW_SETTINGS: WorkflowSettings = {
+  autoExpandWorkflows: true,
+  pinnedWorkflows: [],
+};
+
+export const workflowSettings = storage.defineItem<WorkflowSettings>(
+  'local:workflowSettings',
+  {
+    fallback: DEFAULT_WORKFLOW_SETTINGS,
   }
 );

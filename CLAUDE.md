@@ -25,7 +25,7 @@ utils/
 ```bash
 npm run dev          # Development mode
 npm run build        # Production build (.output/chrome-mv3)
-npm run compile      # TypeScript check
+npm run type-check   # TypeScript check
 ```
 
 ## Conventions

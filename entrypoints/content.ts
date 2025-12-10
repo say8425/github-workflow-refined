@@ -167,6 +167,30 @@ export default defineContentScript({
 
       if (showMoreButton) {
         showMoreButton.click();
+
+        // Scroll workflow list back to top after expanding
+        setTimeout(() => {
+          const workflowList = document.querySelector('ul[aria-label="Workflows"]');
+          if (workflowList) {
+            const scrollContainer = workflowList.closest('[class*="overflow"]') || workflowList.parentElement;
+            if (scrollContainer) {
+              scrollContainer.scrollTop = 0;
+            }
+          }
+          // Also scroll the nav container
+          const nav = document.querySelector('nav[aria-label="Actions Workflows"]');
+          if (nav) {
+            nav.scrollTop = 0;
+            // Check parent containers that might have overflow
+            let parent = nav.parentElement;
+            while (parent) {
+              if (parent.scrollTop > 0) {
+                parent.scrollTop = 0;
+              }
+              parent = parent.parentElement;
+            }
+          }
+        }, 300);
       }
     };
 
@@ -231,7 +255,26 @@ export default defineContentScript({
       const workflowList = document.querySelector('ul[aria-label="Workflows"]');
       if (!workflowList) return;
 
-      const workflowItems = workflowList.querySelectorAll('li');
+      // Add styles for workflow items if not already added
+      if (!document.querySelector('#gwr-pin-styles')) {
+        const style = document.createElement('style');
+        style.id = 'gwr-pin-styles';
+        style.textContent = `
+          ul[aria-label="Workflows"] > li {
+            position: relative;
+          }
+          .gwr-pin-btn {
+            position: absolute !important;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+          }
+        `;
+        document.head.appendChild(style);
+      }
+
+      const workflowItems = workflowList.querySelectorAll(':scope > li');
       workflowItems.forEach((li) => {
         // Remove existing pin button
         const existingBtn = li.querySelector('.gwr-pin-btn');
@@ -249,9 +292,8 @@ export default defineContentScript({
 
         const pinBtn = createPinButton(workflowName, workflowUrl, isPinned);
 
-        // Insert button at the end of the list item
-        const container = li.querySelector('a > span') || link;
-        container.parentElement?.appendChild(pinBtn);
+        // Append button directly to the li element
+        li.appendChild(pinBtn);
       });
     };
 

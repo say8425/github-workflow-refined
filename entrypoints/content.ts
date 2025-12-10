@@ -158,40 +158,75 @@ export default defineContentScript({
       return match ? match[1] : '';
     };
 
-    const autoExpandWorkflows = () => {
-      const showMoreButton = document.querySelector<HTMLButtonElement>(
-        'button[class*="ActionListSectionExpandButton"]'
-      ) || Array.from(document.querySelectorAll('button')).find(
-        (btn) => btn.textContent?.includes('Show more workflows')
-      );
-
-      if (showMoreButton) {
-        showMoreButton.click();
-
-        // Scroll workflow list back to top after expanding
-        setTimeout(() => {
-          const workflowList = document.querySelector('ul[aria-label="Workflows"]');
-          if (workflowList) {
-            const scrollContainer = workflowList.closest('[class*="overflow"]') || workflowList.parentElement;
-            if (scrollContainer) {
-              scrollContainer.scrollTop = 0;
-            }
-          }
-          // Also scroll the nav container
-          const nav = document.querySelector('nav[aria-label="Actions Workflows"]');
-          if (nav) {
-            nav.scrollTop = 0;
-            // Check parent containers that might have overflow
-            let parent = nav.parentElement;
-            while (parent) {
-              if (parent.scrollTop > 0) {
-                parent.scrollTop = 0;
-              }
-              parent = parent.parentElement;
-            }
-          }
-        }, 300);
+    const scrollWorkflowListToTop = () => {
+      const workflowList = document.querySelector('ul[aria-label="Workflows"]');
+      if (workflowList) {
+        const scrollContainer = workflowList.closest('[class*="overflow"]') || workflowList.parentElement;
+        if (scrollContainer) {
+          scrollContainer.scrollTop = 0;
+        }
       }
+      const nav = document.querySelector('nav[aria-label="Actions Workflows"]');
+      if (nav) {
+        nav.scrollTop = 0;
+        let parent = nav.parentElement;
+        while (parent) {
+          if (parent.scrollTop > 0) {
+            parent.scrollTop = 0;
+          }
+          parent = parent.parentElement;
+        }
+      }
+    };
+
+    const findAndClickShowMoreButton = (): boolean => {
+      // Find the "Show more workflows..." button
+      // GitHub uses different class names, so we search by text content with whitespace handling
+      const allButtons = document.querySelectorAll<HTMLButtonElement>('button');
+
+      for (const btn of allButtons) {
+        const text = btn.textContent?.trim() || '';
+        if (text.includes('Show more workflows')) {
+          btn.click();
+          setTimeout(scrollWorkflowListToTop, 50);
+          return true;
+        }
+      }
+      return false;
+    };
+
+    const setupShowMoreObserver = () => {
+      // Use MutationObserver to detect when the "Show more workflows..." button appears
+      const observer = new MutationObserver((mutations) => {
+        if (!wfSettings.autoExpandWorkflows) return;
+
+        for (const mutation of mutations) {
+          for (const node of mutation.addedNodes) {
+            if (node instanceof HTMLElement) {
+              // Check if this node is or contains the button
+              const buttons = node.tagName === 'BUTTON'
+                ? [node as HTMLButtonElement]
+                : Array.from(node.querySelectorAll<HTMLButtonElement>('button'));
+
+              for (const btn of buttons) {
+                const text = btn.textContent?.trim() || '';
+                if (text.includes('Show more workflows')) {
+                  btn.click();
+                  setTimeout(scrollWorkflowListToTop, 50);
+                  return;
+                }
+              }
+            }
+          }
+        }
+      });
+
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+
+      return observer;
     };
 
     const createPinButton = (
@@ -417,17 +452,18 @@ export default defineContentScript({
       });
     };
 
+    let showMoreObserver: MutationObserver | null = null;
+
     const initWorkflowFeatures = () => {
       // Auto-expand workflows
       if (wfSettings.autoExpandWorkflows) {
-        // Try multiple times as the button may load dynamically
-        const tryExpand = (attempts: number) => {
-          autoExpandWorkflows();
-          if (attempts < 5) {
-            setTimeout(() => tryExpand(attempts + 1), 500);
-          }
-        };
-        tryExpand(0);
+        // Try to click immediately if button exists
+        findAndClickShowMoreButton();
+
+        // Set up observer to catch button when it appears dynamically
+        if (!showMoreObserver) {
+          showMoreObserver = setupShowMoreObserver();
+        }
       }
 
       // Add pin buttons and render pinned section
@@ -436,18 +472,31 @@ export default defineContentScript({
         if (workflowList) {
           addPinButtonsToWorkflows();
           renderPinnedWorkflows();
-        } else if (attempts < 10) {
-          setTimeout(() => tryAddPinButtons(attempts + 1), 300);
+        } else if (attempts < 20) {
+          setTimeout(() => tryAddPinButtons(attempts + 1), 200);
         }
       };
       tryAddPinButtons(0);
     };
 
     const init = async () => {
+      // Set up observer immediately before settings load (default is autoExpand=true)
+      // This ensures we catch the button even if it appears before settings are loaded
+      showMoreObserver = setupShowMoreObserver();
+
+      // Also try to click immediately in case button already exists
+      findAndClickShowMoreButton();
+
       [settings, wfSettings] = await Promise.all([
         timeFormatSettings.getValue(),
         workflowSettings.getValue(),
       ]);
+
+      // If autoExpand is disabled, disconnect the observer
+      if (!wfSettings.autoExpandWorkflows && showMoreObserver) {
+        showMoreObserver.disconnect();
+        showMoreObserver = null;
+      }
 
       // Initialize workflow features
       initWorkflowFeatures();
@@ -486,6 +535,31 @@ export default defineContentScript({
         addPinButtonsToWorkflows();
       });
     };
+
+    // Handle GitHub's SPA navigation (turbo/pjax)
+    let lastUrl = location.href;
+    const handleNavigation = () => {
+      if (location.href !== lastUrl) {
+        lastUrl = location.href;
+        // Re-initialize workflow features on navigation
+        initWorkflowFeatures();
+        // Re-process time elements
+        setTimeout(() => {
+          processAllTimeElements();
+          setupElementInterceptor();
+        }, 100);
+      }
+    };
+
+    // Listen for turbo navigation events (GitHub uses Turbo)
+    document.addEventListener('turbo:load', handleNavigation);
+    document.addEventListener('turbo:render', handleNavigation);
+
+    // Fallback: watch for URL changes via popstate and polling
+    window.addEventListener('popstate', handleNavigation);
+
+    // Poll for URL changes (catches pushState/replaceState)
+    setInterval(handleNavigation, 500);
 
     init();
   },

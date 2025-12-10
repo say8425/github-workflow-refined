@@ -1,24 +1,26 @@
 # CLAUDE.md
 
-## Project Overview
+> 이 파일은 [CLAUDE.md 작성 원칙](https://www.humanlayer.dev/blog/writing-a-good-claude-md)을 따릅니다.
 
-Browser extension to enhance GitHub Actions workflow pages with customizable time formatting.
+## What
+
+GitHub Actions workflow 페이지를 개선하는 브라우저 확장 프로그램.
 
 - **Framework**: WXT (https://wxt.dev) + React + TypeScript
-- **Target**: GitHub Actions pages (`github.com/*/actions*`)
+- **Target**: GitHub Actions 페이지 (`github.com/*/actions*`)
 
-## Project Structure
+### Structure
 
 ```
 entrypoints/
-  popup/       # Extension popup UI (React)
-  content.ts   # Content script for GitHub Actions pages
-  background.ts
+  popup/         # Extension popup UI (React)
+  content.ts     # Content script for GitHub Actions pages
+  background.ts  # Service worker
 utils/
-  storage.ts   # WXT storage utilities for settings
+  storage.ts     # WXT storage utilities for settings
 ```
 
-## Commands
+## How
 
 ```bash
 npm run dev          # Development mode
@@ -28,6 +30,6 @@ npm run compile      # TypeScript check
 
 ## Conventions
 
-- Follow Conventional Commits (https://www.conventionalcommits.org)
-- Use `gh` CLI for GitHub operations (issues, PRs)
-- Time formatting uses Day.js format tokens
+- Conventional Commits (https://www.conventionalcommits.org)
+- `gh` CLI for GitHub operations
+- Day.js format tokens for time formatting

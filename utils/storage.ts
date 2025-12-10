@@ -37,13 +37,6 @@ export interface TimeFormatSettings {
 
 export interface WorkflowSettings {
   autoExpandWorkflows: boolean;
-  pinnedWorkflows: PinnedWorkflow[];
-}
-
-export interface PinnedWorkflow {
-  repo: string; // e.g., "owner/repo"
-  name: string; // workflow name
-  url: string;  // workflow URL path
 }
 
 export const DEFAULT_TIME_FORMAT_SETTINGS: TimeFormatSettings = {
@@ -63,7 +56,6 @@ export const timeFormatSettings = storage.defineItem<TimeFormatSettings>(
 
 export const DEFAULT_WORKFLOW_SETTINGS: WorkflowSettings = {
   autoExpandWorkflows: true,
-  pinnedWorkflows: [],
 };
 
 export const workflowSettings = storage.defineItem<WorkflowSettings>(

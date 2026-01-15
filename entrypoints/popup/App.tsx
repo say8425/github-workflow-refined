@@ -18,7 +18,6 @@ import {
   type WorkflowSettings,
   workflowSettingsStorage,
 } from "@/utils/storage";
-import { PreviewSection } from "./components/PreviewSection";
 import { TimeFormatSection } from "./components/TimeFormatSection";
 import { WorkflowSection } from "./components/WorkflowSection";
 import "./App.css";
@@ -39,14 +38,6 @@ function App() {
 
   return (
     <div className="app">
-      <h1>GitHub Workflow Refined</h1>
-      <WorkflowSection
-        settings={workflowSettings}
-        onSettingsChange={async (event) => {
-          setWorkflowSettings(event);
-          await workflowSettingsStorage.setValue(event);
-        }}
-      />
       <TimeFormatSection
         settings={timeFormatSettings}
         onSettingsChange={async (event) => {
@@ -54,7 +45,13 @@ function App() {
           await timeFormatSettingsStorage.setValue(event);
         }}
       />
-      <PreviewSection settings={timeFormatSettings} />
+      <WorkflowSection
+        settings={workflowSettings}
+        onSettingsChange={async (event) => {
+          setWorkflowSettings(event);
+          await workflowSettingsStorage.setValue(event);
+        }}
+      />
     </div>
   );
 }

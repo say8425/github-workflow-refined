@@ -1,146 +1,123 @@
 .app {
-    width: 360px;
-    padding: 16px;
+  width: 360px;
+  padding: 16px;
 }
 
 h1 {
-    font-size: 1.2em;
-    margin: 0 0 16px 0;
-    color: inherit;
+  font-size: 1.2em;
+  margin: 0 0 16px 0;
+  color: inherit;
 }
 
 .section-group {
-    margin-bottom: 20px;
-    padding: 12px;
-    background-color: #1a1a1a;
-    border-radius: 8px;
+  margin-bottom: 20px;
+  padding: 12px;
+  background-color: #1a1a1a;
+  border-radius: 8px;
 }
 
 .section-title {
-    font-size: 1em;
-    margin: 0 0 12px 0;
-    color: #646cff;
-    font-weight: 600;
+  font-size: 1em;
+  margin: 0 0 12px 0;
+  color: #646cff;
+  font-weight: 600;
 }
 
 h3 {
-    font-size: 0.9em;
-    margin: 0 0 8px 0;
-    color: inherit;
+  font-size: 0.9em;
+  margin: 0 0 8px 0;
+  color: inherit;
 }
 
 .section {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 
 .section h2 {
-    font-size: 0.9em;
-    margin: 0 0 8px 0;
-    color: inherit;
+  font-size: 0.9em;
+  margin: 0 0 8px 0;
+  color: inherit;
 }
 
 .description {
-    font-size: 0.8em;
-    color: #888;
-    margin: 0 0 8px 0;
+  font-size: 0.8em;
+  color: #888;
+  margin: 0 0 8px 0;
 }
 
 .description a {
-    color: #646cff;
+  color: #646cff;
 }
 
 .radio-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .radio-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.9em;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 
 .radio-label input[type="radio"] {
-    margin: 0;
-    cursor: pointer;
+  margin: 0;
+  cursor: pointer;
 }
 
 .radio-label .hint {
-    font-size: 0.8em;
-    color: #888;
+  font-size: 0.8em;
+  color: #888;
 }
 
 .select,
 .input {
-    width: 100%;
-    padding: 8px 12px;
-    font-size: 0.9em;
-    border: 1px solid #444;
-    border-radius: 6px;
-    background-color: #2a2a2a;
-    color: inherit;
-    cursor: pointer;
+  width: 100%;
+  padding: 8px 12px;
+  font-size: 0.9em;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background-color: #2a2a2a;
+  color: inherit;
+  cursor: pointer;
 }
 
 .input {
-    margin-top: 8px;
-    cursor: text;
+  margin-top: 8px;
+  cursor: text;
 }
 
 .checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85em;
-    margin-top: 12px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85em;
+  margin-top: 12px;
+  cursor: pointer;
 }
 
 .checkbox-label input[type="checkbox"] {
-    margin: 0;
-    cursor: pointer;
+  margin: 0;
+  cursor: pointer;
 }
 
 .select:focus,
 .input:focus {
-    outline: none;
-    border-color: #646cff;
-}
-
-.preview {
-    background-color: #1a1a1a;
-    padding: 12px;
-    border-radius: 8px;
-}
-
-.preview-box {
-    font-family: monospace;
-    font-size: 0.95em;
-    padding: 8px;
-    background-color: #2a2a2a;
-    border-radius: 4px;
-    text-align: center;
+  outline: none;
+  border-color: #646cff;
 }
 
 @media (prefers-color-scheme: light) {
-    .section-group {
-        background-color: #f5f5f5;
-    }
+  .section-group {
+    background-color: #f5f5f5;
+  }
 
-    .select,
-    .input {
-        background-color: #fff;
-        border-color: #ddd;
-    }
-
-    .preview {
-        background-color: #e8e8e8;
-    }
-
-    .preview-box {
-        background-color: #fff;
-    }
+  .select,
+  .input {
+    background-color: #fff;
+    border-color: #ddd;
+  }
 }

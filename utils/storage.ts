@@ -27,6 +27,38 @@ export const LOCALE_LABELS: Record<SupportedLocale, string> = {
   ru: "Русский",
 };
 
+function getBrowserLocale(): SupportedLocale {
+  const browserLang = navigator.language.toLowerCase();
+
+  // zh-CN, zh-TW 등 특수 케이스 처리
+  if (browserLang.startsWith("zh")) {
+    if (browserLang.includes("tw") || browserLang.includes("hant")) {
+      return "zh-tw";
+    }
+    return "zh-cn";
+  }
+
+  // 언어 코드 추출 (ko-KR -> ko)
+  const langCode = browserLang.split("-")[0];
+
+  const supportedLocales: SupportedLocale[] = [
+    "en",
+    "ko",
+    "ja",
+    "de",
+    "fr",
+    "es",
+    "pt",
+    "ru",
+  ];
+
+  if (supportedLocales.includes(langCode as SupportedLocale)) {
+    return langCode as SupportedLocale;
+  }
+
+  return "en";
+}
+
 export interface TimeFormatSettings {
   displayMode: TimeDisplayMode;
   absoluteFormat: string;
@@ -43,7 +75,7 @@ export const DEFAULT_TIME_FORMAT_SETTINGS: TimeFormatSettings = {
   displayMode: "auto",
   absoluteFormat: "YYYY-MM-DD HH:mm:ss",
   autoThresholdMs: 24 * 60 * 60 * 1000, // 24 hours
-  locale: "en",
+  locale: getBrowserLocale(),
   showTodayIndicator: false,
 };
 

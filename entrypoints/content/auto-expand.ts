@@ -23,11 +23,11 @@ export const scrollWorkflowListToTop = () => {
 export const findAndClickShowMoreButton = (): boolean => {
   // Find the "Show more workflows..." button
   // GitHub uses different class names, so we search by text content with whitespace handling
-  const allButtons = document.querySelectorAll<HTMLButtonElement>('button');
+  const allButtons = document.querySelectorAll<HTMLButtonElement>("button");
 
   for (const btn of allButtons) {
-    const text = btn.textContent?.trim() || '';
-    if (text.includes('Show more workflows')) {
+    const text = btn.textContent?.trim() || "";
+    if (text.includes("Show more workflows")) {
       btn.click();
       setTimeout(scrollWorkflowListToTop, 100);
       return true;
@@ -37,7 +37,7 @@ export const findAndClickShowMoreButton = (): boolean => {
 };
 
 export const setupShowMoreObserver = (
-  isEnabled: () => boolean
+  isEnabled: () => boolean,
 ): MutationObserver => {
   // Use MutationObserver to detect when the "Show more workflows..." button appears
   const observer = new MutationObserver((mutations) => {
@@ -48,13 +48,13 @@ export const setupShowMoreObserver = (
         if (node instanceof HTMLElement) {
           // Check if this node is or contains the button
           const buttons =
-            node.tagName === 'BUTTON'
+            node.tagName === "BUTTON"
               ? [node as HTMLButtonElement]
-              : Array.from(node.querySelectorAll<HTMLButtonElement>('button'));
+              : Array.from(node.querySelectorAll<HTMLButtonElement>("button"));
 
           for (const btn of buttons) {
-            const text = btn.textContent?.trim() || '';
-            if (text.includes('Show more workflows')) {
+            const text = btn.textContent?.trim() || "";
+            if (text.includes("Show more workflows")) {
               btn.click();
               setTimeout(scrollWorkflowListToTop, 100);
               return;

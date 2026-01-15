@@ -114,7 +114,7 @@ export const createTimeFormatter = (settings: TimeFormatSettings) => {
 };
 
 export const setupTimeElementInterceptor = (
-  processTimeElement: (el: HTMLElement) => void
+  processTimeElement: (el: HTMLElement) => void,
 ) => {
   // Watch for new relative-time elements being added to the DOM
   const bodyObserver = new MutationObserver((mutations) => {
@@ -126,11 +126,9 @@ export const setupTimeElementInterceptor = (
             processTimeElement(node);
           }
           // Also check descendants for relative-time elements
-          node
-            .querySelectorAll<HTMLElement>("relative-time")
-            .forEach((el) => {
-              processTimeElement(el);
-            });
+          node.querySelectorAll<HTMLElement>("relative-time").forEach((el) => {
+            processTimeElement(el);
+          });
         }
       });
     }

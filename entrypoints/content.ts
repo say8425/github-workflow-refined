@@ -1,38 +1,36 @@
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
-import 'dayjs/locale/ko';
-import 'dayjs/locale/ja';
-import 'dayjs/locale/zh-cn';
-import 'dayjs/locale/zh-tw';
-import 'dayjs/locale/de';
-import 'dayjs/locale/fr';
-import 'dayjs/locale/es';
-import 'dayjs/locale/pt';
-import 'dayjs/locale/ru';
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
+import "dayjs/locale/ko";
+import "dayjs/locale/ja";
+import "dayjs/locale/zh-cn";
+import "dayjs/locale/zh-tw";
+import "dayjs/locale/de";
+import "dayjs/locale/fr";
+import "dayjs/locale/es";
+import "dayjs/locale/pt";
+import "dayjs/locale/ru";
 
 import {
-  timeFormatSettingsStorage,
-  workflowSettingsStorage,
-  type TimeFormatSettings,
-  type WorkflowSettings,
   DEFAULT_TIME_FORMAT_SETTINGS,
   DEFAULT_WORKFLOW_SETTINGS,
-} from '@/utils/storage';
-
-import {
-  createTimeFormatter,
-  setupTimeElementInterceptor,
-} from './content/time-format';
-
+  type TimeFormatSettings,
+  timeFormatSettingsStorage,
+  type WorkflowSettings,
+  workflowSettingsStorage,
+} from "@/utils/storage";
 import {
   findAndClickShowMoreButton,
   setupShowMoreObserver,
-} from './content/auto-expand';
+} from "./content/auto-expand";
+import {
+  createTimeFormatter,
+  setupTimeElementInterceptor,
+} from "./content/time-format";
 
 dayjs.extend(relativeTime);
 
 export default defineContentScript({
-  matches: ['*://github.com/*/actions*'],
+  matches: ["*://github.com/*/actions*"],
   main() {
     let settings: TimeFormatSettings = DEFAULT_TIME_FORMAT_SETTINGS;
     let wfSettings: WorkflowSettings = DEFAULT_WORKFLOW_SETTINGS;
@@ -45,7 +43,7 @@ export default defineContentScript({
 
         if (!showMoreObserver) {
           showMoreObserver = setupShowMoreObserver(
-            () => wfSettings.autoExpandWorkflows
+            () => wfSettings.autoExpandWorkflows,
           );
         }
       }
@@ -53,7 +51,9 @@ export default defineContentScript({
 
     const init = async () => {
       // Set up observer immediately before settings load (default is autoExpand=true)
-      showMoreObserver = setupShowMoreObserver(() => wfSettings.autoExpandWorkflows);
+      showMoreObserver = setupShowMoreObserver(
+        () => wfSettings.autoExpandWorkflows,
+      );
       findAndClickShowMoreButton();
 
       [settings, wfSettings] = await Promise.all([
@@ -130,9 +130,9 @@ export default defineContentScript({
     };
 
     // Listen for turbo navigation events (GitHub uses Turbo)
-    document.addEventListener('turbo:load', handleNavigation);
-    document.addEventListener('turbo:render', handleNavigation);
-    window.addEventListener('popstate', handleNavigation);
+    document.addEventListener("turbo:load", handleNavigation);
+    document.addEventListener("turbo:render", handleNavigation);
+    window.addEventListener("popstate", handleNavigation);
 
     // Poll for URL changes (catches pushState/replaceState)
     setInterval(handleNavigation, 500);

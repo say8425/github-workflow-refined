@@ -20,7 +20,6 @@ import {
 } from "@/utils/storage";
 import { TimeFormatSection } from "./components/TimeFormatSection";
 import { WorkflowSection } from "./components/WorkflowSection";
-import "./App.css";
 
 dayjs.extend(relativeTime);
 
@@ -37,7 +36,7 @@ function App() {
   }, []);
 
   return (
-    <div className="app">
+    <div className="flex flex-col gap-3 p-3">
       <TimeFormatSection
         settings={timeFormatSettings}
         onSettingsChange={async (event) => {

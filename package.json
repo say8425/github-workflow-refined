@@ -13,12 +13,16 @@
     "zip:firefox": "wxt zip -b firefox",
     "type-check": "tsc --noEmit",
     "preinstall": "tsc --noEmit",
-    "install": "wxt prepare"
+    "install": "wxt prepare",
+    "lint": "biome check",
+    "lint:fix": "biome check --fix"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
     "dayjs": "^1.11.19",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.8",

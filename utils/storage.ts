@@ -47,7 +47,7 @@ export const DEFAULT_TIME_FORMAT_SETTINGS: TimeFormatSettings = {
   showTodayIndicator: false,
 };
 
-export const timeFormatSettings = storage.defineItem<TimeFormatSettings>(
+export const timeFormatSettingsStorage = storage.defineItem<TimeFormatSettings>(
   'local:timeFormatSettings',
   {
     fallback: DEFAULT_TIME_FORMAT_SETTINGS,
@@ -58,7 +58,7 @@ export const DEFAULT_WORKFLOW_SETTINGS: WorkflowSettings = {
   autoExpandWorkflows: true,
 };
 
-export const workflowSettings = storage.defineItem<WorkflowSettings>(
+export const workflowSettingsStorage = storage.defineItem<WorkflowSettings>(
   'local:workflowSettings',
   {
     fallback: DEFAULT_WORKFLOW_SETTINGS,

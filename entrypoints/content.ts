@@ -11,8 +11,8 @@ import 'dayjs/locale/pt';
 import 'dayjs/locale/ru';
 
 import {
-  timeFormatSettings,
-  workflowSettings,
+  timeFormatSettingsStorage,
+  workflowSettingsStorage,
   type TimeFormatSettings,
   type WorkflowSettings,
   DEFAULT_TIME_FORMAT_SETTINGS,
@@ -37,6 +37,7 @@ export default defineContentScript({
     let settings: TimeFormatSettings = DEFAULT_TIME_FORMAT_SETTINGS;
     let wfSettings: WorkflowSettings = DEFAULT_WORKFLOW_SETTINGS;
     let showMoreObserver: MutationObserver | null = null;
+    let currentFormatter: ReturnType<typeof createTimeFormatter> | null = null;
 
     const initWorkflowFeatures = () => {
       if (wfSettings.autoExpandWorkflows) {
@@ -56,8 +57,8 @@ export default defineContentScript({
       findAndClickShowMoreButton();
 
       [settings, wfSettings] = await Promise.all([
-        timeFormatSettings.getValue(),
-        workflowSettings.getValue(),
+        timeFormatSettingsStorage.getValue(),
+        workflowSettingsStorage.getValue(),
       ]);
 
       // If autoExpand is disabled, disconnect the observer
@@ -69,11 +70,12 @@ export default defineContentScript({
       initWorkflowFeatures();
 
       // Create time formatter with current settings
-      const timeFormatter = createTimeFormatter(settings);
+      currentFormatter = createTimeFormatter(settings);
 
       // Initial processing with retries
       const tryProcess = (attempts: number) => {
-        const elements = document.querySelectorAll<HTMLElement>('relative-time');
+        const elements =
+          document.querySelectorAll<HTMLElement>("relative-time");
         let hasContent = false;
 
         elements.forEach((el) => {
@@ -83,8 +85,10 @@ export default defineContentScript({
         });
 
         if (hasContent || attempts >= 10) {
-          timeFormatter.processAllTimeElements();
-          setupTimeElementInterceptor(timeFormatter.processTimeElement);
+          currentFormatter?.processAllTimeElements();
+          if (currentFormatter) {
+            setupTimeElementInterceptor(currentFormatter.processTimeElement);
+          }
         } else {
           setTimeout(() => tryProcess(attempts + 1), 100);
         }
@@ -93,13 +97,15 @@ export default defineContentScript({
       setTimeout(() => tryProcess(0), 100);
 
       // Watch for settings changes
-      timeFormatSettings.watch((newSettings) => {
+      timeFormatSettingsStorage.watch((newSettings) => {
         settings = newSettings;
-        const newFormatter = createTimeFormatter(settings);
-        newFormatter.processAllTimeElements();
+        // Clean up old replacement spans before applying new settings
+        currentFormatter?.cleanup();
+        currentFormatter = createTimeFormatter(settings);
+        currentFormatter.processAllTimeElements();
       });
 
-      workflowSettings.watch((newSettings) => {
+      workflowSettingsStorage.watch((newSettings) => {
         wfSettings = newSettings;
       });
     };
@@ -111,10 +117,14 @@ export default defineContentScript({
         lastUrl = location.href;
         initWorkflowFeatures();
 
-        const timeFormatter = createTimeFormatter(settings);
+        // Clean up and re-process for new page
+        currentFormatter?.cleanup();
+        currentFormatter = createTimeFormatter(settings);
         setTimeout(() => {
-          timeFormatter.processAllTimeElements();
-          setupTimeElementInterceptor(timeFormatter.processTimeElement);
+          currentFormatter?.processAllTimeElements();
+          if (currentFormatter) {
+            setupTimeElementInterceptor(currentFormatter.processTimeElement);
+          }
         }, 100);
       }
     };

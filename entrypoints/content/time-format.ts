@@ -1,5 +1,8 @@
-import dayjs from 'dayjs';
-import type { TimeFormatSettings } from '@/utils/storage';
+import dayjs from "dayjs";
+import type { TimeFormatSettings } from "@/utils/storage";
+
+const PROCESSED_ATTR = "data-time-formatted";
+const REPLACEMENT_ATTR = "data-time-replacement";
 
 export const createTimeFormatter = (settings: TimeFormatSettings) => {
   const isToday = (date: Date): boolean => {
@@ -19,14 +22,14 @@ export const createTimeFormatter = (settings: TimeFormatSettings) => {
     let showAbsolute = false;
 
     switch (settings.displayMode) {
-      case 'relative':
+      case "relative":
         result = d.fromNow();
         break;
-      case 'absolute':
+      case "absolute":
         result = d.format(settings.absoluteFormat);
         showAbsolute = true;
         break;
-      case 'auto':
+      case "auto":
         if (elapsed > settings.autoThresholdMs) {
           result = d.format(settings.absoluteFormat);
           showAbsolute = true;
@@ -37,14 +40,14 @@ export const createTimeFormatter = (settings: TimeFormatSettings) => {
     }
 
     if (showAbsolute && settings.showTodayIndicator && isToday(date)) {
-      result = '📅 ' + result;
+      result = "📅 " + result;
     }
 
     return result;
   };
 
   const processTimeElement = (el: HTMLElement) => {
-    const datetime = el.getAttribute('datetime');
+    const datetime = el.getAttribute("datetime");
     if (!datetime) return;
 
     const date = new Date(datetime);
@@ -52,76 +55,82 @@ export const createTimeFormatter = (settings: TimeFormatSettings) => {
 
     const formatted = formatTime(date);
 
-    // Handle Shadow DOM - relative-time uses Shadow DOM
-    if (el.shadowRoot) {
-      if (el.shadowRoot.textContent) {
-        el.shadowRoot.textContent = formatted;
+    // Check if already processed
+    if (el.hasAttribute(PROCESSED_ATTR)) {
+      // Update existing replacement span
+      const existingSpan = el.nextElementSibling;
+      if (
+        existingSpan?.hasAttribute(REPLACEMENT_ATTR) &&
+        existingSpan.textContent !== formatted
+      ) {
+        existingSpan.textContent = formatted;
       }
+      return;
     }
 
-    // Update title attribute for tooltip
-    el.setAttribute('title', dayjs(date).format('YYYY-MM-DD HH:mm:ss'));
+    // Mark as processed
+    el.setAttribute(PROCESSED_ATTR, "true");
+
+    // Hide original element (GitHub's relative-time re-renders its shadow DOM)
+    el.style.display = "none";
+
+    // Create replacement span with our formatted time
+    const span = document.createElement("span");
+    span.textContent = formatted;
+    span.setAttribute(REPLACEMENT_ATTR, "true");
+    span.setAttribute("title", dayjs(date).format("YYYY-MM-DD HH:mm:ss"));
+
+    // Insert after the original element
+    el.after(span);
   };
 
   const processAllTimeElements = () => {
-    const timeElements = document.querySelectorAll<HTMLElement>('relative-time');
+    const timeElements =
+      document.querySelectorAll<HTMLElement>("relative-time");
     timeElements.forEach((el) => {
       processTimeElement(el);
     });
+  };
+
+  // Clean up replacement spans (useful when settings change)
+  const cleanup = () => {
+    document
+      .querySelectorAll<HTMLElement>(`[${REPLACEMENT_ATTR}]`)
+      .forEach((span) => span.remove());
+    document
+      .querySelectorAll<HTMLElement>(`[${PROCESSED_ATTR}]`)
+      .forEach((el) => {
+        el.removeAttribute(PROCESSED_ATTR);
+        el.style.display = "";
+      });
   };
 
   return {
     formatTime,
     processTimeElement,
     processAllTimeElements,
+    cleanup,
   };
 };
 
 export const setupTimeElementInterceptor = (
   processTimeElement: (el: HTMLElement) => void
 ) => {
-  // Watch for shadow root changes on relative-time elements
-  const observeShadowRoot = (el: HTMLElement) => {
-    if (!el.shadowRoot) return;
-
-    const shadowObserver = new MutationObserver(() => {
-      // Re-apply our formatting when shadow DOM changes
-      setTimeout(() => processTimeElement(el), 0);
-    });
-
-    shadowObserver.observe(el.shadowRoot, {
-      childList: true,
-      characterData: true,
-      subtree: true,
-    });
-  };
-
-  // Observe all existing relative-time elements
-  document.querySelectorAll<HTMLElement>('relative-time').forEach((el) => {
-    if (el.shadowRoot) {
-      observeShadowRoot(el);
-    }
-  });
-
-  // Watch for new relative-time elements being added
+  // Watch for new relative-time elements being added to the DOM
   const bodyObserver = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       mutation.addedNodes.forEach((node) => {
         if (node instanceof HTMLElement) {
-          if (node.tagName === 'RELATIVE-TIME') {
-            // Wait for shadow root to be created
-            setTimeout(() => {
-              observeShadowRoot(node);
-              processTimeElement(node);
-            }, 50);
+          // Check if the added node is a relative-time element
+          if (node.tagName === "RELATIVE-TIME") {
+            processTimeElement(node);
           }
-          // Also check descendants
-          node.querySelectorAll<HTMLElement>('relative-time').forEach((el) => {
-            setTimeout(() => {
-              observeShadowRoot(el);
+          // Also check descendants for relative-time elements
+          node
+            .querySelectorAll<HTMLElement>("relative-time")
+            .forEach((el) => {
               processTimeElement(el);
-            }, 50);
-          });
+            });
         }
       });
     }

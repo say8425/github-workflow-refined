@@ -7,17 +7,23 @@
 GitHub Actions workflow 페이지를 개선하는 브라우저 확장 프로그램.
 
 - **Framework**: WXT (https://wxt.dev) + React + TypeScript
+- **Styling**: TailwindCSS v4
 - **Target**: GitHub Actions 페이지 (`github.com/*/actions*`)
 
 ### Structure
 
 ```
 entrypoints/
-  popup/         # Extension popup UI (React)
-  content.ts     # Content script for GitHub Actions pages
-  background.ts  # Service worker
+  popup/           # Extension popup UI (React)
+    components/    # TimeFormatSection, WorkflowSection
+    style.css      # Tailwind imports & theme
+  content.ts       # Content script for GitHub Actions pages
+  content/         # Content script modules
+    auto-expand.ts # Auto-expand workflow list
+    time-format.ts # Time formatting logic
+  background.ts    # Service worker
 utils/
-  storage.ts     # WXT storage utilities for settings
+  storage.ts       # WXT storage utilities & browser locale detection
 ```
 
 ## How
@@ -33,3 +39,5 @@ npm run type-check   # TypeScript check
 - Conventional Commits (https://www.conventionalcommits.org)
 - `gh` CLI for GitHub operations
 - Day.js format tokens for time formatting
+- Biome for linting/formatting (`npx biome check --write`)
+- TailwindCSS utility classes (sorted by Biome `useSortedClasses`)

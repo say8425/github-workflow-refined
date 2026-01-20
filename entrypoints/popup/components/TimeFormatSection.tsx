@@ -189,7 +189,7 @@ export function TimeFormatSection({
               checked={settings.showTodayIndicator}
               onChange={(e) => handleTodayIndicatorChange(e.target.checked)}
             />
-            <span>Show today indicator</span>
+            <span>📅 Show today indicator</span>
           </label>
         </section>
       )}

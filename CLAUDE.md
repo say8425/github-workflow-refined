@@ -22,6 +22,10 @@ entrypoints/
     auto-expand.ts # Auto-expand workflow list
     time-format.ts # Time formatting logic
   background.ts    # Service worker
+assets/
+  icon.png         # Source icon (auto-resized by @wxt-dev/auto-icons)
+public/
+  _locales/        # i18n (en, ko)
 utils/
   storage.ts       # WXT storage utilities & browser locale detection
 ```

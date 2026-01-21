@@ -29,6 +29,7 @@ npm run type-check   # TypeScript check
 ## Tech Stack
 
 - [WXT](https://wxt.dev) - Browser extension framework
+- [@wxt-dev/auto-icons](https://wxt.dev/auto-icons.html) - Auto icon generation
 - React + TypeScript
 - TailwindCSS v4
 - Day.js for time formatting

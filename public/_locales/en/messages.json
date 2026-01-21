@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "GitHub Workflow Refined",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Enhance GitHub Actions workflow pages",
+    "description": "Extension description"
+  }
+}

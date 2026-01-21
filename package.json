@@ -1,6 +1,6 @@
 {
-  "name": "wxt-react-starter",
-  "description": "manifest.json description",
+  "name": "github-workflow-refined",
+  "description": "Enhance GitHub Actions workflow pages",
   "private": true,
   "version": "0.0.0",
   "type": "module",

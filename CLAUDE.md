@@ -25,7 +25,7 @@ entrypoints/
 assets/
   icon.png         # Source icon (auto-resized by @wxt-dev/auto-icons)
 public/
-  _locales/        # i18n (en, ko)
+  _locales/        # i18n (en, ko, ja, zh-cn, zh-tw, de, fr, es, pt, ru)
 utils/
   storage.ts       # WXT storage utilities & browser locale detection
 ```
@@ -36,6 +36,8 @@ utils/
 npm run dev          # Development mode
 npm run build        # Production build (.output/chrome-mv3)
 npm run type-check   # TypeScript check
+npm run lint         # Biome lint check
+npm run lint:fix     # Biome lint auto-fix
 ```
 
 ## Conventions

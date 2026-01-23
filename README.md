@@ -5,6 +5,7 @@ Browser extension to enhance GitHub Actions workflow pages.
 ## Features
 
 - **Time Format**: Configurable time display (Relative, Absolute, Auto)
+- **Today Indicator**: Highlights today's workflow runs
 - **Auto Language**: Detects browser language on first install
 - **Auto-expand**: Automatically expands "Show more workflows..." button
 - **Multi-language**: Supports EN, KO, JA, ZH-CN, ZH-TW, DE, FR, ES, PT, RU
@@ -24,6 +25,8 @@ Load `.output/chrome-mv3` as unpacked extension in Chrome.
 npm run dev          # Development mode with HMR
 npm run build        # Production build
 npm run type-check   # TypeScript check
+npm run lint         # Biome lint check
+npm run lint:fix     # Biome lint auto-fix
 ```
 
 ## Tech Stack

@@ -2,6 +2,22 @@
 
 Browser extension to enhance GitHub Actions workflow pages.
 
+## Screenshots
+
+| Relative Time | Absolute + Today Indicator |
+|---|---|
+| ![Relative Time](https://github.com/say8425/github-workflow-refined/raw/main/screenshots/스크린샷%202026-01-23%2015.48.42.png) | ![Absolute Format](https://github.com/say8425/github-workflow-refined/raw/main/screenshots/스크린샷%202026-01-23%2015.49.09.png) |
+
+### Multi-language
+
+| 简体中文 | 繁體中文 | 日本語 |
+|---|---|---|
+| ![Simplified Chinese](https://github.com/say8425/github-workflow-refined/raw/main/screenshots/스크린샷%202026-01-23%2015.50.26.png) | ![Traditional Chinese](https://github.com/say8425/github-workflow-refined/raw/main/screenshots/스크린샷%202026-01-23%2015.50.35.png) | ![Japanese](https://github.com/say8425/github-workflow-refined/raw/main/screenshots/스크린샷%202026-01-23%2015.49.49.png) |
+
+| 한국어 | Español |
+|---|---|
+| ![Korean](https://github.com/say8425/github-workflow-refined/raw/main/screenshots/스크린샷%202026-01-23%2015.48.53.png) | ![Spanish](https://github.com/say8425/github-workflow-refined/raw/main/screenshots/스크린샷%202026-01-23%2015.50.14.png) |
+
 ## Features
 
 - **Time Format**: Configurable time display (Relative, Absolute, Auto)

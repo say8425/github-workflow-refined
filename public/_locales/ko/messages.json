@@ -6,5 +6,101 @@
   "extDescription": {
     "message": "GitHub Actions 워크플로우 페이지를 개선합니다",
     "description": "Extension description"
+  },
+  "timeFormatTitle": {
+    "message": "시간 형식",
+    "description": "Time format section title"
+  },
+  "timeFormatLanguage": {
+    "message": "언어",
+    "description": "Language selector label"
+  },
+  "timeFormatDisplayMode": {
+    "message": "표시 모드",
+    "description": "Display mode section title"
+  },
+  "displayModeRelative": {
+    "message": "상대적",
+    "description": "Relative time display mode"
+  },
+  "displayModeAbsolute": {
+    "message": "절대적",
+    "description": "Absolute time display mode"
+  },
+  "displayModeAuto": {
+    "message": "자동",
+    "description": "Auto time display mode"
+  },
+  "displayModeRelativeEx": {
+    "message": "예: \"2시간 전\"",
+    "description": "Relative mode example"
+  },
+  "displayModeAbsoluteEx": {
+    "message": "예: \"2024-01-15 14:30:00\"",
+    "description": "Absolute mode example"
+  },
+  "displayModeAutoDesc": {
+    "message": "기준 시간 이내는 상대적, 이후는 절대적",
+    "description": "Auto mode description"
+  },
+  "autoThresholdTitle": {
+    "message": "자동 전환 기준",
+    "description": "Auto threshold section title"
+  },
+  "autoThresholdDesc": {
+    "message": "설정한 시간이 지나면 상대 시간에서 절대 시간으로 전환됩니다.",
+    "description": "Auto threshold description"
+  },
+  "absoluteFormatTitle": {
+    "message": "절대 시간 형식",
+    "description": "Absolute format section title"
+  },
+  "absoluteFormatDesc": {
+    "message": "Day.js 형식 포맷",
+    "description": "Absolute format description"
+  },
+  "absoluteFormatCustom": {
+    "message": "사용자 정의...",
+    "description": "Custom format option"
+  },
+  "absoluteFormatPlaceholder": {
+    "message": "사용자 정의 형식 입력...",
+    "description": "Custom format input placeholder"
+  },
+  "showTodayIndicator": {
+    "message": "오늘 표시기 보기",
+    "description": "Today indicator checkbox label"
+  },
+  "workflowListTitle": {
+    "message": "워크플로우 목록",
+    "description": "Workflow list section title"
+  },
+  "autoExpandWorkflows": {
+    "message": "\"더 많은 워크플로우 표시...\" 자동 확장",
+    "description": "Auto-expand workflows checkbox label"
+  },
+  "threshold1Hour": {
+    "message": "1시간",
+    "description": "1 hour threshold option"
+  },
+  "threshold6Hours": {
+    "message": "6시간",
+    "description": "6 hours threshold option"
+  },
+  "threshold12Hours": {
+    "message": "12시간",
+    "description": "12 hours threshold option"
+  },
+  "threshold24Hours": {
+    "message": "24시간",
+    "description": "24 hours threshold option"
+  },
+  "threshold7Days": {
+    "message": "7일",
+    "description": "7 days threshold option"
+  },
+  "threshold30Days": {
+    "message": "30일",
+    "description": "30 days threshold option"
   }
 }

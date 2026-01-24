@@ -4,103 +4,103 @@
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Enhance GitHub Actions workflow pages",
+    "message": "增強 GitHub Actions 工作流頁面",
     "description": "Extension description"
   },
   "timeFormatTitle": {
-    "message": "Time Format",
+    "message": "時間格式",
     "description": "Time format section title"
   },
   "timeFormatLanguage": {
-    "message": "Language",
+    "message": "語言",
     "description": "Language selector label"
   },
   "timeFormatDisplayMode": {
-    "message": "Display Mode",
+    "message": "顯示模式",
     "description": "Display mode section title"
   },
   "displayModeRelative": {
-    "message": "Relative",
+    "message": "相對",
     "description": "Relative time display mode"
   },
   "displayModeAbsolute": {
-    "message": "Absolute",
+    "message": "絕對",
     "description": "Absolute time display mode"
   },
   "displayModeAuto": {
-    "message": "Auto",
+    "message": "自動",
     "description": "Auto time display mode"
   },
   "displayModeRelativeEx": {
-    "message": "e.g., \"2 hours ago\"",
+    "message": "例如：\"2小時前\"",
     "description": "Relative mode example"
   },
   "displayModeAbsoluteEx": {
-    "message": "e.g., \"2024-01-15 14:30:00\"",
+    "message": "例如：\"2024-01-15 14:30:00\"",
     "description": "Absolute mode example"
   },
   "displayModeAutoDesc": {
-    "message": "Relative within threshold, then absolute",
+    "message": "閾值內顯示相對時間，之後顯示絕對時間",
     "description": "Auto mode description"
   },
   "autoThresholdTitle": {
-    "message": "Auto Threshold",
+    "message": "自動切換閾值",
     "description": "Auto threshold section title"
   },
   "autoThresholdDesc": {
-    "message": "Show relative time until this duration has passed, then switch to absolute.",
+    "message": "超過設定時間後，從相對時間切換為絕對時間。",
     "description": "Auto threshold description"
   },
   "absoluteFormatTitle": {
-    "message": "Absolute Format",
+    "message": "絕對時間格式",
     "description": "Absolute format section title"
   },
   "absoluteFormatDesc": {
-    "message": "Day.js format tokens",
+    "message": "Day.js 格式標記",
     "description": "Absolute format description"
   },
   "absoluteFormatCustom": {
-    "message": "Custom...",
+    "message": "自訂...",
     "description": "Custom format option"
   },
   "absoluteFormatPlaceholder": {
-    "message": "Enter custom format...",
+    "message": "輸入自訂格式...",
     "description": "Custom format input placeholder"
   },
   "showTodayIndicator": {
-    "message": "Show today indicator",
+    "message": "顯示今日標記",
     "description": "Today indicator checkbox label"
   },
   "workflowListTitle": {
-    "message": "Workflow List",
+    "message": "工作流列表",
     "description": "Workflow list section title"
   },
   "autoExpandWorkflows": {
-    "message": "Auto-expand \"Show more workflows...\"",
+    "message": "自動展開\"顯示更多工作流...\"",
     "description": "Auto-expand workflows checkbox label"
   },
   "threshold1Hour": {
-    "message": "1 hour",
+    "message": "1小時",
     "description": "1 hour threshold option"
   },
   "threshold6Hours": {
-    "message": "6 hours",
+    "message": "6小時",
     "description": "6 hours threshold option"
   },
   "threshold12Hours": {
-    "message": "12 hours",
+    "message": "12小時",
     "description": "12 hours threshold option"
   },
   "threshold24Hours": {
-    "message": "24 hours",
+    "message": "24小時",
     "description": "24 hours threshold option"
   },
   "threshold7Days": {
-    "message": "7 days",
+    "message": "7天",
     "description": "7 days threshold option"
   },
   "threshold30Days": {
-    "message": "30 days",
+    "message": "30天",
     "description": "30 days threshold option"
   }
 }

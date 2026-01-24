@@ -1,3 +1,4 @@
+import { t } from "@/utils/i18n";
 import type { WorkflowSettings } from "@/utils/storage";
 
 interface WorkflowSectionProps {
@@ -15,7 +16,9 @@ export function WorkflowSection({
 
   return (
     <div className="rounded-lg bg-bg-section p-3">
-      <h2 className="font-semibold text-base text-primary">Workflow List</h2>
+      <h2 className="font-semibold text-base text-primary">
+        {t("workflowListTitle")}
+      </h2>
       <div className="mt-3 flex flex-col gap-4">
         <section>
           <label className="flex cursor-pointer items-center gap-2 text-[0.85rem]">
@@ -25,7 +28,7 @@ export function WorkflowSection({
               checked={settings.autoExpandWorkflows}
               onChange={(e) => handleAutoExpandChange(e.target.checked)}
             />
-            <span>Auto-expand "Show more workflows..."</span>
+            <span>{t("autoExpandWorkflows")}</span>
           </label>
         </section>
       </div>

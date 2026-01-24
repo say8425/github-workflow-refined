@@ -4,103 +4,103 @@
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Enhance GitHub Actions workflow pages",
+    "message": "Aprimorar páginas de fluxo de trabalho do GitHub Actions",
     "description": "Extension description"
   },
   "timeFormatTitle": {
-    "message": "Time Format",
+    "message": "Formato de hora",
     "description": "Time format section title"
   },
   "timeFormatLanguage": {
-    "message": "Language",
+    "message": "Idioma",
     "description": "Language selector label"
   },
   "timeFormatDisplayMode": {
-    "message": "Display Mode",
+    "message": "Modo de exibição",
     "description": "Display mode section title"
   },
   "displayModeRelative": {
-    "message": "Relative",
+    "message": "Relativo",
     "description": "Relative time display mode"
   },
   "displayModeAbsolute": {
-    "message": "Absolute",
+    "message": "Absoluto",
     "description": "Absolute time display mode"
   },
   "displayModeAuto": {
-    "message": "Auto",
+    "message": "Automático",
     "description": "Auto time display mode"
   },
   "displayModeRelativeEx": {
-    "message": "e.g., \"2 hours ago\"",
+    "message": "ex.: \"2 horas atrás\"",
     "description": "Relative mode example"
   },
   "displayModeAbsoluteEx": {
-    "message": "e.g., \"2024-01-15 14:30:00\"",
+    "message": "ex.: \"2024-01-15 14:30:00\"",
     "description": "Absolute mode example"
   },
   "displayModeAutoDesc": {
-    "message": "Relative within threshold, then absolute",
+    "message": "Relativo dentro do limite, depois absoluto",
     "description": "Auto mode description"
   },
   "autoThresholdTitle": {
-    "message": "Auto Threshold",
+    "message": "Limite automático",
     "description": "Auto threshold section title"
   },
   "autoThresholdDesc": {
-    "message": "Show relative time until this duration has passed, then switch to absolute.",
+    "message": "Mostrar tempo relativo até que essa duração tenha passado, depois mudar para absoluto.",
     "description": "Auto threshold description"
   },
   "absoluteFormatTitle": {
-    "message": "Absolute Format",
+    "message": "Formato absoluto",
     "description": "Absolute format section title"
   },
   "absoluteFormatDesc": {
-    "message": "Day.js format tokens",
+    "message": "Tokens de formato Day.js",
     "description": "Absolute format description"
   },
   "absoluteFormatCustom": {
-    "message": "Custom...",
+    "message": "Personalizado...",
     "description": "Custom format option"
   },
   "absoluteFormatPlaceholder": {
-    "message": "Enter custom format...",
+    "message": "Digite o formato personalizado...",
     "description": "Custom format input placeholder"
   },
   "showTodayIndicator": {
-    "message": "Show today indicator",
+    "message": "Mostrar indicador de hoje",
     "description": "Today indicator checkbox label"
   },
   "workflowListTitle": {
-    "message": "Workflow List",
+    "message": "Lista de fluxos de trabalho",
     "description": "Workflow list section title"
   },
   "autoExpandWorkflows": {
-    "message": "Auto-expand \"Show more workflows...\"",
+    "message": "Expandir automaticamente \"Mostrar mais fluxos de trabalho...\"",
     "description": "Auto-expand workflows checkbox label"
   },
   "threshold1Hour": {
-    "message": "1 hour",
+    "message": "1 hora",
     "description": "1 hour threshold option"
   },
   "threshold6Hours": {
-    "message": "6 hours",
+    "message": "6 horas",
     "description": "6 hours threshold option"
   },
   "threshold12Hours": {
-    "message": "12 hours",
+    "message": "12 horas",
     "description": "12 hours threshold option"
   },
   "threshold24Hours": {
-    "message": "24 hours",
+    "message": "24 horas",
     "description": "24 hours threshold option"
   },
   "threshold7Days": {
-    "message": "7 days",
+    "message": "7 dias",
     "description": "7 days threshold option"
   },
   "threshold30Days": {
-    "message": "30 days",
+    "message": "30 dias",
     "description": "30 days threshold option"
   }
 }

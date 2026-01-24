@@ -4,103 +4,103 @@
     "description": "Extension name"
   },
   "extDescription": {
-    "message": "Enhance GitHub Actions workflow pages",
+    "message": "GitHub Actionsワークフローページを改善します",
     "description": "Extension description"
   },
   "timeFormatTitle": {
-    "message": "Time Format",
+    "message": "時間形式",
     "description": "Time format section title"
   },
   "timeFormatLanguage": {
-    "message": "Language",
+    "message": "言語",
     "description": "Language selector label"
   },
   "timeFormatDisplayMode": {
-    "message": "Display Mode",
+    "message": "表示モード",
     "description": "Display mode section title"
   },
   "displayModeRelative": {
-    "message": "Relative",
+    "message": "相対",
     "description": "Relative time display mode"
   },
   "displayModeAbsolute": {
-    "message": "Absolute",
+    "message": "絶対",
     "description": "Absolute time display mode"
   },
   "displayModeAuto": {
-    "message": "Auto",
+    "message": "自動",
     "description": "Auto time display mode"
   },
   "displayModeRelativeEx": {
-    "message": "e.g., \"2 hours ago\"",
+    "message": "例: \"2時間前\"",
     "description": "Relative mode example"
   },
   "displayModeAbsoluteEx": {
-    "message": "e.g., \"2024-01-15 14:30:00\"",
+    "message": "例: \"2024-01-15 14:30:00\"",
     "description": "Absolute mode example"
   },
   "displayModeAutoDesc": {
-    "message": "Relative within threshold, then absolute",
+    "message": "しきい値以内は相対、以降は絶対",
     "description": "Auto mode description"
   },
   "autoThresholdTitle": {
-    "message": "Auto Threshold",
+    "message": "自動切替しきい値",
     "description": "Auto threshold section title"
   },
   "autoThresholdDesc": {
-    "message": "Show relative time until this duration has passed, then switch to absolute.",
+    "message": "設定した時間が経過すると、相対時間から絶対時間に切り替わります。",
     "description": "Auto threshold description"
   },
   "absoluteFormatTitle": {
-    "message": "Absolute Format",
+    "message": "絶対時間形式",
     "description": "Absolute format section title"
   },
   "absoluteFormatDesc": {
-    "message": "Day.js format tokens",
+    "message": "Day.jsフォーマットトークン",
     "description": "Absolute format description"
   },
   "absoluteFormatCustom": {
-    "message": "Custom...",
+    "message": "カスタム...",
     "description": "Custom format option"
   },
   "absoluteFormatPlaceholder": {
-    "message": "Enter custom format...",
+    "message": "カスタム形式を入力...",
     "description": "Custom format input placeholder"
   },
   "showTodayIndicator": {
-    "message": "Show today indicator",
+    "message": "今日インジケーターを表示",
     "description": "Today indicator checkbox label"
   },
   "workflowListTitle": {
-    "message": "Workflow List",
+    "message": "ワークフロー一覧",
     "description": "Workflow list section title"
   },
   "autoExpandWorkflows": {
-    "message": "Auto-expand \"Show more workflows...\"",
+    "message": "\"ワークフローをもっと表示...\"を自動展開",
     "description": "Auto-expand workflows checkbox label"
   },
   "threshold1Hour": {
-    "message": "1 hour",
+    "message": "1時間",
     "description": "1 hour threshold option"
   },
   "threshold6Hours": {
-    "message": "6 hours",
+    "message": "6時間",
     "description": "6 hours threshold option"
   },
   "threshold12Hours": {
-    "message": "12 hours",
+    "message": "12時間",
     "description": "12 hours threshold option"
   },
   "threshold24Hours": {
-    "message": "24 hours",
+    "message": "24時間",
     "description": "24 hours threshold option"
   },
   "threshold7Days": {
-    "message": "7 days",
+    "message": "7日",
     "description": "7 days threshold option"
   },
   "threshold30Days": {
-    "message": "30 days",
+    "message": "30日",
     "description": "30 days threshold option"
   }
 }

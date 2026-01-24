@@ -40,7 +40,7 @@ export const createTimeFormatter = (settings: TimeFormatSettings) => {
     }
 
     if (showAbsolute && settings.showTodayIndicator && isToday(date)) {
-      result = "📅 " + result;
+      result = `📅 ${result}`;
     }
 
     return result;
@@ -51,7 +51,7 @@ export const createTimeFormatter = (settings: TimeFormatSettings) => {
     if (!datetime) return;
 
     const date = new Date(datetime);
-    if (isNaN(date.getTime())) return;
+    if (Number.isNaN(date.getTime())) return;
 
     const formatted = formatTime(date);
 
@@ -96,7 +96,9 @@ export const createTimeFormatter = (settings: TimeFormatSettings) => {
   const cleanup = () => {
     document
       .querySelectorAll<HTMLElement>(`[${REPLACEMENT_ATTR}]`)
-      .forEach((span) => span.remove());
+      .forEach((span) => {
+        span.remove();
+      });
     document
       .querySelectorAll<HTMLElement>(`[${PROCESSED_ATTR}]`)
       .forEach((el) => {

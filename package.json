@@ -12,8 +12,7 @@
     "zip": "wxt zip",
     "zip:firefox": "wxt zip -b firefox",
     "type-check": "tsc --noEmit",
-    "preinstall": "tsc --noEmit",
-    "install": "wxt prepare",
+    "postinstall": "wxt prepare",
     "lint": "biome check",
     "lint:fix": "biome check --fix"
   },

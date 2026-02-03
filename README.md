@@ -1,6 +1,6 @@
 # GitHub Workflow Refined
 
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/nanlhoijdkmlalnlhcnddandakicbdpl?logo=chromewebstore&logoColor=white&color=4285F4)](https://chromewebstore.google.com/detail/github-workflow-refined/nanlhoijdkmlalnlhcnddandakicbdpl)
+[![Chrome Web Store Version](https://img.shields.io/chrome-web-store/v/nanlhoijdkmlalnlhcnddandakicbdpl?logo=chromewebstore&logoColor=white&color=4285F4)](https://chromewebstore.google.com/detail/github-workflow-refined/nanlhoijdkmlalnlhcnddandakicbdpl)
 
 Browser extension to enhance GitHub Actions workflow pages.
 
@@ -32,7 +32,7 @@ Browser extension to enhance GitHub Actions workflow pages.
 
 ### Chrome Web Store
 
-[![Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png)](https://chromewebstore.google.com/detail/nanlhoijdkmlalnlhcnddandakicbdpl)
+[![Available in the Chrome Web Store](https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYWPJUsQceQkhXSlv1/iNEddTyWiMfLSwFD6qGq.png)](https://chromewebstore.google.com/detail/nanlhoijdkmlalnlhcnddandakicbdpl)
 
 ### Manual Install
 

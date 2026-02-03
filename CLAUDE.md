@@ -14,20 +14,24 @@ GitHub Actions workflow 페이지를 개선하는 브라우저 확장 프로그�
 
 ```
 entrypoints/
-  popup/           # Extension popup UI (React)
-    components/    # TimeFormatSection, WorkflowSection
-    style.css      # Tailwind imports & theme
-  content.ts       # Content script for GitHub Actions pages
-  content/         # Content script modules
-    auto-expand.ts # Auto-expand workflow list
-    time-format.ts # Time formatting logic
-  background.ts    # Service worker
+  popup/             # Extension popup UI (React)
+    components/      # TimeFormatSection, WorkflowSection
+    App.tsx          # Main popup component
+    main.tsx         # React entry point
+    constants.ts     # Time format options
+    style.css        # Tailwind imports & theme
+  content.ts         # Content script for GitHub Actions pages
+  content/           # Content script modules
+    auto-expand.ts   # Auto-expand workflow list
+    time-format.ts   # Time formatting logic
+  background.ts      # Service worker
 assets/
-  icon.png         # Source icon (auto-resized by @wxt-dev/auto-icons)
+  icon.png           # Source icon (auto-resized by @wxt-dev/auto-icons)
 public/
-  _locales/        # i18n (en, ko, ja, zh-cn, zh-tw, de, fr, es, pt, ru)
+  _locales/          # i18n (en, ko, ja, zh_CN, zh_TW, de, fr, es, pt, ru)
 utils/
-  storage.ts       # WXT storage utilities & browser locale detection
+  storage.ts         # WXT storage utilities & browser locale detection
+  i18n.ts            # i18n helper for chrome.i18n.getMessage
 ```
 
 ## How

@@ -61,3 +61,7 @@ npm run lint:fix     # Biome lint auto-fix
 - TailwindCSS v4
 - Day.js for time formatting
 - Biome for linting/formatting
+
+## Privacy
+
+See [Privacy Policy](PRIVACY.md) for details on data handling.

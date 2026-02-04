@@ -51,6 +51,8 @@ npm run build        # Production build
 npm run type-check   # TypeScript check
 npm run lint         # Biome lint check
 npm run lint:fix     # Biome lint auto-fix
+npm run test:e2e     # Run Playwright E2E tests
+npm run test:e2e:ui  # Run E2E tests in UI mode
 ```
 
 ## Tech Stack
@@ -61,6 +63,7 @@ npm run lint:fix     # Biome lint auto-fix
 - TailwindCSS v4
 - Day.js for time formatting
 - Biome for linting/formatting
+- [Playwright](https://playwright.dev) for E2E testing
 
 ## Privacy
 

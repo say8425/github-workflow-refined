@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Actions · Mock Repository</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      padding: 20px;
+    }
+    .workflow-list {
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 16px;
+    }
+    .workflow-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid #21262d;
+    }
+    .workflow-item:last-child {
+      border-bottom: none;
+    }
+    .status-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+    .status-success { background: #238636; }
+    .status-failure { background: #da3633; }
+    .status-pending { background: #9e6a03; }
+    relative-time {
+      color: #8b949e;
+      font-size: 14px;
+    }
+    .show-more-btn {
+      margin-top: 16px;
+      padding: 8px 16px;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      color: #c9d1d9;
+      cursor: pointer;
+    }
+    .show-more-btn:hover {
+      background: #30363d;
+    }
+    .hidden-workflows {
+      display: none;
+    }
+    .hidden-workflows.expanded {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div class="workflow-list">
+    <h2>Workflow runs</h2>
+
+    <div class="workflow-item">
+      <div class="status-icon status-success"></div>
+      <div>
+        <div>Build and Test</div>
+        <relative-time datetime="2024-01-15T10:30:00Z">2 hours ago</relative-time>
+      </div>
+    </div>
+
+    <div class="workflow-item">
+      <div class="status-icon status-failure"></div>
+      <div>
+        <div>Deploy to Production</div>
+        <relative-time datetime="2024-01-15T08:15:00Z">4 hours ago</relative-time>
+      </div>
+    </div>
+
+    <div class="workflow-item">
+      <div class="status-icon status-success"></div>
+      <div>
+        <div>Lint and Format</div>
+        <relative-time datetime="2024-01-14T22:00:00Z">14 hours ago</relative-time>
+      </div>
+    </div>
+
+    <div class="hidden-workflows" id="more-workflows">
+      <div class="workflow-item">
+        <div class="status-icon status-success"></div>
+        <div>
+          <div>E2E Tests</div>
+          <relative-time datetime="2024-01-14T18:00:00Z">18 hours ago</relative-time>
+        </div>
+      </div>
+
+      <div class="workflow-item">
+        <div class="status-icon status-pending"></div>
+        <div>
+          <div>Security Scan</div>
+          <relative-time datetime="2024-01-14T12:00:00Z">yesterday</relative-time>
+        </div>
+      </div>
+    </div>
+
+    <button class="show-more-btn" id="show-more" onclick="toggleWorkflows()">
+      Show more workflows
+    </button>
+  </div>
+
+  <script>
+    // Simulate GitHub's relative-time custom element with Shadow DOM
+    class RelativeTime extends HTMLElement {
+      constructor() {
+        super();
+        this.attachShadow({ mode: 'open' });
+      }
+
+      connectedCallback() {
+        const datetime = this.getAttribute('datetime');
+        const date = new Date(datetime);
+        const now = new Date();
+        const diff = now - date;
+
+        let text;
+        const hours = Math.floor(diff / (1000 * 60 * 60));
+        if (hours < 24) {
+          text = `${hours} hours ago`;
+        } else {
+          text = 'yesterday';
+        }
+
+        this.shadowRoot.innerHTML = `<span>${text}</span>`;
+      }
+    }
+
+    customElements.define('relative-time', RelativeTime);
+
+    window.toggleWorkflows = () => {
+      const moreWorkflows = document.getElementById('more-workflows');
+      const btn = document.getElementById('show-more');
+
+      if (moreWorkflows.classList.contains('expanded')) {
+        moreWorkflows.classList.remove('expanded');
+        btn.textContent = 'Show more workflows';
+      } else {
+        moreWorkflows.classList.add('expanded');
+        btn.textContent = 'Show fewer workflows';
+      }
+    }
+  </script>
+</body>
+</html>

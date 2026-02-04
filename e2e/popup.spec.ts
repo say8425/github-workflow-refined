@@ -1,3 +1,4 @@
+import type { Page } from "@playwright/test";
 import { expect, test } from "./fixtures";
 
 const LOCALES = [
@@ -31,27 +32,30 @@ const THRESHOLD_VALUES = [
   { ms: 2592000000, label: "30" }, // 30 days
 ] as const;
 
+// Helper function to open popup page
+async function openPopup(
+  context: { newPage: () => Promise<Page> },
+  extensionId: string,
+): Promise<Page> {
+  const popup = await context.newPage();
+  await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+  return popup;
+}
+
 test.describe("Popup UI Tests", () => {
   test.describe("Initial State", () => {
     test("should load popup with both sections visible", async ({
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
-      // TimeFormat section
-      const timeFormatSection = popup
-        .locator("h2")
-        .filter({ hasText: /.+/ })
-        .first();
+      // TimeFormat section (first h2)
+      const timeFormatSection = popup.locator("h2").first();
       await expect(timeFormatSection).toBeVisible();
 
-      // Workflow section
-      const workflowSection = popup
-        .locator("h2")
-        .filter({ hasText: /.+/ })
-        .last();
+      // Workflow section (second h2)
+      const workflowSection = popup.locator("h2").last();
       await expect(workflowSection).toBeVisible();
     });
 
@@ -59,10 +63,9 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
-      // Default display mode is auto
+      // Default display mode is auto (third radio button)
       const autoRadio = popup
         .locator('input[type="radio"][name="displayMode"]')
         .nth(2);
@@ -80,8 +83,7 @@ test.describe("Popup UI Tests", () => {
         context,
         extensionId,
       }) => {
-        const popup = await context.newPage();
-        await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+        const popup = await openPopup(context, extensionId);
 
         const localeSelect = popup.locator("select").first();
         await localeSelect.selectOption(locale.code);
@@ -95,8 +97,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       const relativeRadio = popup
         .locator('input[type="radio"][name="displayMode"]')
@@ -113,8 +114,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       const absoluteRadio = popup
         .locator('input[type="radio"][name="displayMode"]')
@@ -131,8 +131,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       // First switch to relative to reset
       const relativeRadio = popup
@@ -158,8 +157,7 @@ test.describe("Popup UI Tests", () => {
         context,
         extensionId,
       }) => {
-        const popup = await context.newPage();
-        await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+        const popup = await openPopup(context, extensionId);
 
         // Switch to absolute mode
         const absoluteRadio = popup
@@ -178,8 +176,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       // Switch to absolute mode
       const absoluteRadio = popup
@@ -207,8 +204,7 @@ test.describe("Popup UI Tests", () => {
         context,
         extensionId,
       }) => {
-        const popup = await context.newPage();
-        await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+        const popup = await openPopup(context, extensionId);
 
         // Auto mode should be default, threshold select should be visible
         const thresholdSelect = popup.locator("select").nth(1);
@@ -223,8 +219,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       // Today indicator checkbox (first checkbox in TimeFormat section)
       const todayCheckbox = popup.locator('input[type="checkbox"]').first();
@@ -236,8 +231,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       const todayCheckbox = popup.locator('input[type="checkbox"]').first();
       await todayCheckbox.check();
@@ -246,8 +240,7 @@ test.describe("Popup UI Tests", () => {
     });
 
     test("should toggle Auto expand ON", async ({ context, extensionId }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       // Auto expand checkbox (in Workflow section)
       const autoExpandCheckbox = popup.locator('input[type="checkbox"]').last();
@@ -258,8 +251,7 @@ test.describe("Popup UI Tests", () => {
     });
 
     test("should toggle Auto expand OFF", async ({ context, extensionId }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       const autoExpandCheckbox = popup.locator('input[type="checkbox"]').last();
       await autoExpandCheckbox.uncheck();
@@ -272,8 +264,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       // Change multiple settings
       const localeSelect = popup.locator("select").first();
@@ -293,13 +284,12 @@ test.describe("Popup UI Tests", () => {
       const autoExpandCheckbox = popup.locator('input[type="checkbox"]').last();
       await autoExpandCheckbox.uncheck();
 
-      // Wait for settings to be saved
-      await popup.waitForTimeout(100);
+      // Verify the checkbox is unchecked before closing (ensures storage is updated)
+      await expect(autoExpandCheckbox).not.toBeChecked();
 
       // Close and reopen popup
       await popup.close();
-      const popup2 = await context.newPage();
-      await popup2.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup2 = await openPopup(context, extensionId);
 
       // Verify all settings persisted
       await expect(popup2.locator("select").first()).toHaveValue("ko");
@@ -323,8 +313,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       const relativeRadio = popup
         .locator('input[type="radio"][name="displayMode"]')
@@ -340,8 +329,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       const absoluteRadio = popup
         .locator('input[type="radio"][name="displayMode"]')
@@ -357,8 +345,7 @@ test.describe("Popup UI Tests", () => {
       context,
       extensionId,
     }) => {
-      const popup = await context.newPage();
-      await popup.goto(`chrome-extension://${extensionId}/popup.html`);
+      const popup = await openPopup(context, extensionId);
 
       const autoRadio = popup
         .locator('input[type="radio"][name="displayMode"]')

@@ -104,7 +104,7 @@
       </div>
     </div>
 
-    <button class="show-more-btn" id="show-more" onclick="toggleWorkflows()">
+    <button class="show-more-btn" id="show-more">
       Show more workflows
     </button>
   </div>
@@ -137,7 +137,7 @@
 
     customElements.define('relative-time', RelativeTime);
 
-    window.toggleWorkflows = () => {
+    const toggleWorkflows = () => {
       const moreWorkflows = document.getElementById('more-workflows');
       const btn = document.getElementById('show-more');
 
@@ -148,7 +148,9 @@
         moreWorkflows.classList.add('expanded');
         btn.textContent = 'Show fewer workflows';
       }
-    }
+    };
+
+    document.getElementById('show-more')?.addEventListener('click', toggleWorkflows);
   </script>
 </body>
 </html>

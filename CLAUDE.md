@@ -32,6 +32,10 @@ public/
 utils/
   storage.ts         # WXT storage utilities & browser locale detection
   i18n.ts            # i18n helper for chrome.i18n.getMessage
+e2e/
+  fixtures.ts        # Playwright test fixtures for extension loading
+  popup.spec.ts      # Popup UI E2E tests (36 test cases)
+  mocks/             # Mock pages for testing
 ```
 
 ## How
@@ -42,6 +46,8 @@ npm run build        # Production build (.output/chrome-mv3)
 npm run type-check   # TypeScript check
 npm run lint         # Biome lint check
 npm run lint:fix     # Biome lint auto-fix
+npm run test:e2e     # Run Playwright E2E tests
+npm run test:e2e:ui  # Run E2E tests in UI mode
 ```
 
 ## Conventions

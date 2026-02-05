@@ -32,7 +32,7 @@ Browser extension to enhance GitHub Actions workflow pages.
 
 ### Chrome Web Store
 
-[![Available in the Chrome Web Store](https://developer.chrome.com/static/docs/webstore/branding/image/iNEddTyWiMfLSwFD6qGq.png)](https://chromewebstore.google.com/detail/nanlhoijdkmlalnlhcnddandakicbdpl)
+[![Available in the Chrome Web Store](https://developer.chrome.com/static/docs/webstore/branding/image/iNEddTyWiMfLSwFD6qGq.png)](https://chromewebstore.google.com/detail/github-workflow-refined/nanlhoijdkmlalnlhcnddandakicbdpl)
 
 ### Manual Install
 
